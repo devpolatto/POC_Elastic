@@ -31,6 +31,10 @@ metricbeat.modules:
       - fsstat
     period: 10s
     filesystem.ignore_types: [smbfs, proc, autofs, securityfs, squashfs, tmpfs, devtmpfs, cifs, iso9660, udf]
+    processors:
+      - script:
+          lang: javascript
+          file: ${path.config}/filter.js
 
   - module: kibana
     metricsets: 
