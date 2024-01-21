@@ -185,3 +185,4 @@ services:
       - ELASTIC_USER=${ELASTIC_USER}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTIC_HOSTS=${ELASTIC_HOSTS}
+      - KIBANA_HOSTS=http://localhost:5601

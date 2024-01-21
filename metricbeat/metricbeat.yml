@@ -32,6 +32,29 @@ metricbeat.modules:
     period: 10s
     filesystem.ignore_types: [smbfs, proc, autofs, securityfs, squashfs, tmpfs, devtmpfs, cifs, iso9660, udf]
 
+  - module: kibana
+    metricsets: 
+      - stats
+    period: 10s
+    hosts: http://kibana:5601
+    username: ${ELASTIC_USER}
+    password: ${ELASTIC_PASSWORD}
+    ssl.certificate_authorities: "certs/ca/ca.crt"
+    ssl.certificate: "certs/es01/es01.crt"
+    ssl.key: "certs/es01/es01.key"
+    xpack.enabled: true
+
+setup.dashboards:
+  enabled: true
+setup.kibana:
+  host: http://kibana:5601
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD}
+
+processors:
+ - add_host_metadata: ~
+ - add_docker_metadata: ~
+
 output.elasticsearch:
   hosts: ${ELASTIC_HOSTS}
   username: ${ELASTIC_USER}
@@ -39,7 +62,7 @@ output.elasticsearch:
   allow_older_versions: true
   name: "asgard-agent"
   indices:
-    - index: "asgard-metricbeat-%{[agent.version]}-%{+yyyy.MM.dd}"
+    - index: "metricbeat-asgard-%{[agent.version]}-%{+yyyy.MM.dd}"
   ssl:
     certificate: "certs/es01/es01.crt"
     certificate_authorities: "certs/ca/ca.crt"
